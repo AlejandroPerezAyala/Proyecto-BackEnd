@@ -1,0 +1,11 @@
+[
+	{
+		"id": 1,
+		"title": "producto prueba",
+		"description": "producto prueba",
+		"price": "200",
+		"thumbnail": "http://localhost:8080/images/goldenretriever.jpg",
+		"code": "abc123",
+		"stock": "20"
+	}
+]
