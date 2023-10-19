@@ -103,11 +103,7 @@ export default class ProductManager {
         this.products = JSON.parse(data)
         const producto = this.products.find(product => product.id === id)
 
-        if(producto){
-            return producto
-        } else {
-            return "Not Found"
-        }
+        return producto ? producto : 'Not found'
     }
 
     //Modifico 1 producto

@@ -7,5 +7,14 @@
 		"thumbnail": "http://localhost:8080/images/goldenretriever.jpg",
 		"code": "abc123",
 		"stock": "20"
+	},
+	{
+		"id": 2,
+		"title": "producto prueba 2",
+		"description": "producto de prueba modificado",
+		"price": "50",
+		"thumbnail": "http://localhost:8080/images/rottweiler.jpg",
+		"code": "abc143",
+		"stock": "10"
 	}
 ]
