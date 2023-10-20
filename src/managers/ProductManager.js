@@ -10,10 +10,14 @@ export default class ProductManager {
 
     //Validacion para que el codigo no se repita
     validateCode = async (code) => {
-        const data = await fs.promises.readFile(this.path, 'utf-8')
-        this.products = JSON.parse(data)
+        try{ 
+            const data = await fs.promises.readFile(this.path, 'utf-8')
+            this.products = JSON.parse(data)
 
-        return this.products.some((producto) => producto.code == code)
+            return this.products.some((producto) => producto.code == code)
+        } catch (err) {
+            return err
+        }
 
     }
 
@@ -99,35 +103,47 @@ export default class ProductManager {
 
     //Muestro 1 producto buscando el id dentro del array
     getProductById = async (id) => {
-        const data = await fs.promises.readFile(this.path, 'utf-8')
-        this.products = JSON.parse(data)
-        const producto = this.products.find(product => product.id === id)
+        try{
+            const data = await fs.promises.readFile(this.path, 'utf-8')
+            this.products = JSON.parse(data)
+            const producto = this.products.find(product => product.id === id)
 
-        return producto ? producto : 'Not found'
+            return producto ? producto : 'Not found'
+        } catch (err) {
+            return err
+        }
     }
 
     //Modifico 1 producto
     updateProduct = async (id, update) => {
-        const data = await fs.promises.readFile(this.path, 'utf-8')
-        this.products = JSON.parse(data)
-        let producto = this.products.find(product => product.id === id)
+        try{
+            const data = await fs.promises.readFile(this.path, 'utf-8')
+            this.products = JSON.parse(data)
+            let producto = this.products.find(product => product.id === id)
 
-        for(let propiedad in update){
-            if(producto.hasOwnProperty(propiedad)){
-                producto[propiedad] = update[propiedad]
+            for(let propiedad in update){
+                if(producto.hasOwnProperty(propiedad)){
+                    producto[propiedad] = update[propiedad]
+                }
             }
+            
+            await fs.promises.writeFile(this.path, JSON.stringify(this.products,null,'\t'))
+            return "Se modifico el producto correctamente"
+        } catch (err) {
+            return err
         }
-        
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products,null,'\t'))
-        return "Se modifico el producto correctamente"
     }
 
     deleteProduct = async (id) => {
-        const data = await fs.promises.readFile(this.path, 'utf-8')
-        this.products = JSON.parse(data)
-        const productos = this.products.filter(product => product.id !== id)
+        try{
+            const data = await fs.promises.readFile(this.path, 'utf-8')
+            this.products = JSON.parse(data)
+            const productos = this.products.filter(product => product.id !== id)
 
-        await fs.promises.writeFile(this.path, JSON.stringify(productos,null,'\t'))
-        return "Se elimino el producto correctamente"
+            await fs.promises.writeFile(this.path, JSON.stringify(productos,null,'\t'))
+            return "Se elimino el producto correctamente"
+        } catch (err) {
+            return err
+        }
     }
 }
