@@ -1,0 +1,49 @@
+<div>
+    <h1 class=" text-2xl font-bold my-3 dark:text-white">PRODUCTOS</h1>
+    
+    <section class="grid grid-cols-4 gap-5 place-content-around">
+        {{#each products.payload}}
+            <div class="max-w-sm bg-amber-100 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <a href="#">
+                    <img class="rounded-t-lg" src="{{this.thumbnail}}" alt="" />
+                </a>
+                <div class="p-5">
+                    <a href="#">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{this.title}}</h5>
+                    </a>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{this.description}}</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><span class="font-bold">stock:</span> {{this.stock}}</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><span class="font-bold">price: $</span>{{this.price}}</p>
+                    <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Agregar al carrito
+                        <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        {{/each}}
+    </section>
+    <div class="flex mt-5 justify-center">
+
+        {{#if products.hasPrevPage}}
+            <a href="/home/products/?page={{products.prevPage}}&&limit={{products.limit}}&&sort={{products.sort}}" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                Anterior
+                </span>
+            </a>
+        {{/if}}
+
+        <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3"><span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>{{products.page}}</span>
+
+        {{#if products.hasNextPage}}
+            <a href="/home/products/?page={{products.nextPage}}&&limit={{products.limit}}&&sort={{products.sort}}" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                Siguiente
+                </span>
+            </a>
+        {{/if}}
+    </div>
+    
+</div>
+

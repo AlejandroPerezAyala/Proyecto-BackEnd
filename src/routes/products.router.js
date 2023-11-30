@@ -1,14 +1,19 @@
 import { Router } from "express";
-import ProductManager from "../managers/ProductManager.js";
+import ProductManager from "../dao/managers/productManagerMongo.js";
 import { uploader } from "../utils.js";
+import { socketServer } from "../app.js";
 
 const router = Router()
 const productManager = new ProductManager()
 
+
+
 router.get('/', async (req,res) =>{
     try{
-        const limit = parseInt(req.query?.limit)
-        const products = await productManager.getProducts(limit)
+        const limit = req.query?.limit ?? 10
+        const page = req.query?.page ?? 1
+        const sort = req.query?.sort ?? "asc"
+        const products = await productManager.getProducts(limit, page, sort)
         res.send(products)
 
     } catch (err) {
@@ -18,7 +23,7 @@ router.get('/', async (req,res) =>{
 
 router.get('/:id', async (req,res) => {
     try{
-        const id = parseInt(req.params.id)
+        const id = req.params.id
         const producto = await productManager.getProductById(id)
         res.send(producto)
     } catch (err) {
@@ -36,11 +41,12 @@ router.post('/', uploader.single('thumbnail'), async (req, res) => {
         const data = req.body
         const filename = req.file.filename
 
-        data.thumbnail = `http://localhost:8080/images/${filename}`
+        data.thumbnail = `http://localhost:8080/static/images/${filename}`
 
         const producto = await productManager.getAddProducts(data)
-
-        res.send(producto)
+        const productos = await productManager.getProducts()
+        socketServer.emit('newProduct', productos)
+        res.json(producto)
     } catch (err) {
         res.status(500).send("Error al cargar el producto: " + err)
     }
@@ -49,7 +55,7 @@ router.post('/', uploader.single('thumbnail'), async (req, res) => {
 
 router.put('/:id', uploader.single('thumbnail'), async (req, res) => {
     try{
-        const id = parseInt(req.params.id)
+        const id = req.params.id
         const data = req.body
 
         if(req.file){
@@ -67,11 +73,11 @@ router.put('/:id', uploader.single('thumbnail'), async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try{
-        const id = parseInt(req.params.id)
+        const id = req.params.id
 
         const productEliminated = await productManager.deleteProduct(id)
-
-        res.send(productEliminated)
+        socketServer.emit('deleteProduct', productEliminated.res)
+        res.json(productEliminated)
     } catch (err) {
         res.status(500).send("Error al querer eliminar el producto: " + err)
     }
