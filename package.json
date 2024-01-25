@@ -6,19 +6,27 @@
   "main": "index.js",
   "scripts": {
     "style": "npx tailwindcss -i ./src/style.css -o ./src/public/css/style.css --watch",
-    "dev": "nodemon ./src/app.js",
+    "dev": "nodemon ./src/app.js --persistence MONGO",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Alejandro Perez Ayala",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "commander": "^11.1.0",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
+    "express-session": "^1.17.3",
     "flowbite": "^2.0.0",
     "mongoose": "^8.0.1",
     "mongoose-paginate-v2": "^1.7.4",
     "multer": "^1.4.5-lts.1",
+    "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
+    "passport-local": "^1.0.0",
     "socket.io": "^4.7.2"
   },
   "devDependencies": {
