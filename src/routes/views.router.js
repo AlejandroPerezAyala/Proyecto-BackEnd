@@ -2,24 +2,16 @@ import { Router } from "express";
 import ProductManager from "../dao/mongo/productManagerMongo.js"
 import CartManager from "../dao/mongo/cartManagerMongo.js"
 import { cartService } from "../services/index.js";
+import { auth, publicAccess, current } from "../middlewares/middlewares.js";
 
 
 
 const router = Router()
 const productManager = new ProductManager()
 const cartManager = new CartManager()
+const ROL = ["admin"]
 
 
-const publicAccess = (req, res, next) => {
-    if(req.session?.user) return res.redirect('/home/products')
-    
-    return next()
-}
-
-const auth = (req, res, next) => {
-    if(req.session?.user) return next()
-    res.redirect('/home/login')
-}
 
 router.get('/products', auth, async (req, res) => {
     try{
@@ -85,19 +77,26 @@ router.get('/login', publicAccess,async (req, res) => {
 })
 
 router.get('/register', publicAccess,async (req,res) =>{
+    console.log("hola")
     res.render('register', {
         style: 'style.css'
     })
 })
 
-router.get('/:cid/purchase', async (req, res) => {
+router.get('/:cid/purchase', current(ROL),async (req, res) => {
     const id = req.params.cid
     const {email} = req.session.user
     
-    const purchase = await cartService.purchaseProducts(id,email)
+    const {ticket, cart} = await cartService.purchaseProducts(id,email)
 
-    console.log({purchase})
-    //res.send(purchase)
+    
+    console.log(ticket)
+
+    res.render('ticket', {
+        style: 'style.css',
+        ticket,
+        cart
+    })
 })
 
 export default router

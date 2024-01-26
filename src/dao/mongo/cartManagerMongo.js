@@ -133,7 +133,7 @@ export default class CartManager {
     }
 
     purchaseProducts = async (cid, email) => {
-        const cart = await cartModel.findOne({_id:cid})
+        const cart = await cartModel.findOne({_id:cid}).lean().exec()
         if(!cart) return {status: error, res: 'no se encontro el carrito con ese ID'}
 
         const productosComprados = []
@@ -143,7 +143,7 @@ export default class CartManager {
         for (const productos of cart.productos){
             const product = await productModel.findOne(productos.producto)
 
-            if(product.stock === 0){
+            if(product.stock == 0){
                 productosDevueltos.push(productos)
             } 
 
@@ -151,14 +151,13 @@ export default class CartManager {
                 product.stock -= productos.qty
                 await productModel.updateOne({_id: product._id}, {$set: product})
                 productosComprados.push({product: product._id, quantity: productos.qty})
+                montoTotal += product.price * productos.qty
             } else {
                 productosDevueltos.push(productos)
             }
 
-            montoTotal += product.price * productos.qty
+            
         }   
-
-        console.log({productosDevueltos})
 
         if(productosComprados.length > 0){
             const newTicket ={
@@ -179,7 +178,7 @@ export default class CartManager {
             return {
                 status: 'Success',
                 ticket: result,
-                cart: cart.productos
+                cart: cart
             }
 
         }
