@@ -84,8 +84,8 @@ export const deleteAllProducts = async (req, res) => {
 
 export const purchaseProducts = async (req, res) => {
     const id = req.params.cid
-    const user = req.session.user
-    console.log(user)
+    const user = req.user
+    res.json({payload: user})
 
     // const purchase = await cartService.purchaseProducts(id, email)
 

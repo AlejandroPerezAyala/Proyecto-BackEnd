@@ -1,6 +1,6 @@
 export const current = (rol) => {
     return (req,res,next) => {
-        if(req.session.user.rol == rol) {
+        if(req.user.rol == rol) {
             return next()
         }
 
@@ -9,12 +9,12 @@ export const current = (rol) => {
 }
 
 export const publicAccess = (req, res, next) => {
-    if(req.session?.user) return res.redirect('/home/products')
+    if(req.cookies['CoderCookie']) return res.redirect('/home/products')
     
     return next()
 }
 
 export const auth = (req, res, next) => {
-    if(req.session?.user) return next()
+    if(req.cookies['CoderCookie']) return next()
     res.redirect('/home/login')
 }

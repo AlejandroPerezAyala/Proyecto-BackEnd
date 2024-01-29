@@ -10,7 +10,15 @@ const schema = new mongoose.Schema({
         unique: true
     },
     age: Number,
-    rol: String,
+    cart:{
+        _id:false,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "carts"
+    },
+    rol: {
+        type:String, 
+        default: "user"
+    },
     password: String
 })
 

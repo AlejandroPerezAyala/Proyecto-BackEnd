@@ -1,38 +1,18 @@
 import { Router } from "express";
 import passport from "passport";
-import config from "../config/config.js";
+import { login, register, logout, github } from "../controllers/sessions.controller.js";
 
 
 const router = Router()
 
-router.post('/login', passport.authenticate('login', {failureRedirect: '/home'}),async (req, res) => {
-    
-    if(!req.user) return res.status(404).send("Credenciales invalidas")
-        
-        
-    req.session.user = req.user
+router.post('/login', passport.authenticate('login', {failureRedirect: '/home', session:false}), login)
 
-    res.redirect("/home/products")
-})
+router.post('/register', passport.authenticate('register', {failureRedirect: '/home', session: false}), register)
 
-router.post('/register', passport.authenticate('register', {failureRedirect: '/home'}),async (req, res) => {
-    res.redirect("/home/login")
-})
+router.get('/logout', logout)
 
-router.get('/logout', async (req,res) => {
-    req.session.destroy(err => {
-        if(err) return res.send("error al hacer el logout" + err)
+router.get('/github', passport.authenticate('github', {scope:['user:email'], session: false}))
 
-        res.redirect("/home/login")
-    })
-})
-
-router.get('/github', passport.authenticate('github', {scope:['user:email']}))
-
-router.get('/githubcallback', passport.authenticate('github', {failureRedirect: "/home/login"}), async (req,res) => {
-    req.session.user = req.user
-
-    res.redirect("/home/products")
-})
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect: "/home/login", session:false}), github)
 
 export default router

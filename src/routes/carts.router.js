@@ -1,4 +1,5 @@
 import { Router } from "express";
+import passport from "passport";
 import { getCartById, getCarts, createCart, addProductInCart, deleteAllProducts, deleteProductInCart, updateProductInCart, updateProductsInCart, purchaseProducts } from "../controllers/carts.controller.js";
 
 
@@ -21,7 +22,7 @@ router.delete('/:cid/product/:pid', deleteProductInCart)
 
 router.delete('/:cid', deleteAllProducts)
 
-router.get('/:cid/purchase', purchaseProducts)
+router.get('/:cid/purchase', passport.authenticate('jwt', {session: false}), purchaseProducts)
 
 
 
