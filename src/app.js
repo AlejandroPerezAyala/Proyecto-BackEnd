@@ -48,6 +48,7 @@ app.engine('handlebars', handlebars.engine())
 app.set('views',__dirname + '/views')
 app.set('view engine', 'handlebars')
 
+app.use('/', routerViews)
 app.use('/api/products', routerProducts)
 app.use('/api/carts', routerCarts)
 app.use('/api/sessions', routerSessions)

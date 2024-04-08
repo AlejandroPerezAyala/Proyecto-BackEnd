@@ -55,7 +55,7 @@ export const updateProduct = async (req, res) => {
 
         if(req.file){
             const filename = req.file.filename
-            data.thumbnail = `/images/${filename}`
+            data.thumbnail = `/static/images/${filename}`
         }
 
         const producto = await productService.updateProduct(id, data)
