@@ -49,12 +49,12 @@ btns.forEach(btn => {
 btnDel.addEventListener("click" , async (e) => {
     e.preventDefault()
 
-    const result = await fetch("http://localhost:8080/api/user")
+    const result = await fetch("/api/user")
     const user = await result.json()
 
     console.log(user.cart)
 
-    const data = await fetch(`http://localhost:8080/api/carts/${user.cart}`)
+    const data = await fetch(`/api/carts/${user.cart}`)
     const cart = await data.json()
 
     console.log(cart.productos)
@@ -66,7 +66,7 @@ btnDel.addEventListener("click" , async (e) => {
         btnDel.addClass("disabled")
     }
 
-    await fetch(`http://localhost:8080/api/carts/${cart._id}`, {
+    await fetch(`/api/carts/${cart._id}`, {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json',

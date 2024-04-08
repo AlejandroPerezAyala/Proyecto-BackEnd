@@ -14,7 +14,7 @@ const checkOut = async () => {
             price: amount.innerText
         }
 
-        const response = await fetch('http://localhost:8080/api/create_preference', {
+        const response = await fetch('/api/create_preference', {
             method: 'POST',
             headers: {
                 "Content-Type" : "application/json"
