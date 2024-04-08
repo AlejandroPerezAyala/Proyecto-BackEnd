@@ -1344,3 +1344,6 @@
 {"level":"http","message":"[GET] /static/images/IMG_0540.jpg - 23:33:15"}
 {"level":"http","message":"[GET] /api/user - 23:33:18"}
 {"level":"http","message":"[POST] /api/carts/65b6b3f5f514a1b88e4e1845/product/656514de7829022afd441c3e - 23:33:19"}
+{"level":"http","message":"[GET] /api/sessions/googlecallback?code=4%2F0AeaYSHDdw-ebYZhubriGWbtlkhQmo5gkxe2SntFsDv_2bwRjKHPufkwfdecdeZmETT1ZtQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=consent - 23:38:06"}
+{"level":"http","message":"[GET] /home/products - 23:38:06"}
+{"level":"http","message":"[GET] /static/images/IMG_0540.jpg - 23:38:06"}
