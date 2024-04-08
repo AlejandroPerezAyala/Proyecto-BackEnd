@@ -1,3 +1,5 @@
+import { logger } from "../logger.js"
+
 export const current = (rol) => {
     return (req,res,next) => {
         if(req.user.rol == rol) {
@@ -17,4 +19,10 @@ export const publicAccess = (req, res, next) => {
 export const auth = (req, res, next) => {
     if(req.cookies['CoderCookie']) return next()
     res.redirect('/home/login')
+}
+
+export const addLogger = (req, res, next) =>{
+    req.logger = logger
+    req.logger.http(`[${req.method}] ${req.url} - ${new Date().toLocaleTimeString()}`)
+    next()
 }

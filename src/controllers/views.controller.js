@@ -1,4 +1,5 @@
-import { productService, cartService } from "../services/index.js";
+import { productService, cartService, userService } from "../services/index.js";
+import { logger } from "../logger.js";
 
  export const getProducts =  async (req, res) => {
     try{
@@ -16,7 +17,7 @@ import { productService, cartService } from "../services/index.js";
         })
 
     } catch (err) {
-        res.status(500).send("Error al obtener los productos" + err)
+        logger.error("Error al obtener los productos" + err)
     }  
 }
 
@@ -30,7 +31,7 @@ export const realTimeGetProducts = async (req, res) => {
         })
 
     } catch (err) {
-        res.status(500).send("Error al obtener los productos" + err)
+        logger.error("Error al obtener los productos" + err)
     }  
 }
 
@@ -47,7 +48,7 @@ export const getCartById = async (req,res) => {
 
 
     } catch(error){
-        res.status(500).send("Error al obtener el carrito" + err)
+        logger.error("Error al obtener el carrito" + err)
     }
 }
 
@@ -68,17 +69,27 @@ export const login = async (req, res) => {
 }
 
 export const purchaseCart = async (req, res) => {
-    const id = req.params.cid
-    const {email} = req.user.user
+    try {
+        const id = req.params.cid
+        const {email} = req.user.user
+        
+        const {ticket, cart} = await cartService.purchaseProducts(id,email)
+        
+        res.render('ticket', {
+            style: 'style.css',
+            ticket,
+            cart
+        })
+    } catch (e) {
+        res.status(400).render("ticket", {
+            style: 'style.css'
+        })
+    }
     
-    const {ticket, cart} = await cartService.purchaseProducts(id,email)
+}
 
-    
-    console.log(ticket)
-
-    res.render('ticket', {
-        style: 'style.css',
-        ticket,
-        cart
+export const forgotPassword = async (req, res) => {
+    res.render('forgotpass', {
+        style: 'style.css'
     })
 }

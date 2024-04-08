@@ -1,4 +1,7 @@
 let btns = document.querySelectorAll('#addBtn')
+const btnDel = document.getElementById("btnDel")
+const cartTitle = document.getElementById("empty")
+const list = document.getElementById("list")
 
 
 btns.forEach(btn => {
@@ -16,7 +19,6 @@ btns.forEach(btn => {
 
         const data = await result.json()
         const cartId = data.cart
-        console.log(cartId)
 
         await fetch(`/api/carts/${cartId}/product/${productId}`, {
             method: 'POST',
@@ -42,4 +44,35 @@ btns.forEach(btn => {
               }
         })
     })
+})
+
+btnDel.addEventListener("click" , async (e) => {
+    e.preventDefault()
+
+    const result = await fetch("http://localhost:8080/api/user")
+    const user = await result.json()
+
+    console.log(user.cart)
+
+    const data = await fetch(`http://localhost:8080/api/carts/${user.cart}`)
+    const cart = await data.json()
+
+    console.log(cart.productos)
+
+    if(cart.productos == []) {
+        cartTitle.innerHTML = "CARRITO VACIO"
+        cartTitle.classList.remove("hidden")
+        list.classList.add("hidden")
+        btnDel.addClass("disabled")
+    }
+
+    await fetch(`http://localhost:8080/api/carts/${cart._id}`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    
+
+    setInterval("location.reload()", 1000)
 })

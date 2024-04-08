@@ -8,5 +8,9 @@ export default class UserServices{
         return await this.dao.getUser(id)
     }
 
+    getUserByEmail = async (email) => {
+        return await this.dao.getUserByEmail(email)
+    }
+
     
 }

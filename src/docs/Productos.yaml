@@ -1,0 +1,31 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags: 
+        - Productos
+
+  /api/products/:
+    post:
+      summary: Agrega un producto a la DB
+      tags:
+        - Productos
+
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto por ID
+      tags:
+        - Productos
+    put:
+      summary: Actualiza un producto dentro de la DB, obteniendolo por el ID
+      tags:
+        - Productos
+    delete:
+      summary: Elimina un producto de la BD
+      tags:
+        - Productos
+    
+
+  
+
+  

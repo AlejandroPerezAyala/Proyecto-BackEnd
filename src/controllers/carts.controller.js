@@ -1,4 +1,5 @@
 import { cartService } from "../services/index.js"
+import { logger } from "../logger.js"
 
 
 
@@ -8,7 +9,7 @@ export const getCarts =  async (req, res) => {
         res.send(carts)
 
     } catch (err) {
-        res.status(500).send("Error al obtener los carritos" + err)
+        logger.error(err)
     }
 }
 
@@ -24,7 +25,7 @@ export const createCart = async (req, res) => {
         const cart = await cartService.createCart()
         res.send(cart)
     } catch (err) {
-        res.status(500).send("Error al crear el carrito" + err)
+        logger.error(err)
     }
 }
 
@@ -38,7 +39,7 @@ export const addProductInCart = async (req, res) => {
         res.send(product)
 
     } catch (err) {
-        res.status(500).send("Error al agregar producto al carrito" + err)
+        logger.error(err)
     }
 }
 
@@ -72,7 +73,7 @@ export const deleteProductInCart = async (req, res) => {
         res.send(product)
 
     } catch (err) {
-        res.status(500).send("Error al agregar producto al carrito" + err)
+        logger.error(err)
     }
 }
 

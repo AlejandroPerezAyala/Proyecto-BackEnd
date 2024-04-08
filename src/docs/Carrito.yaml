@@ -1,0 +1,44 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags: 
+        - Carrito
+    post:
+      summary: Creo un carrito en la DB
+      tags: 
+        - Carrito
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un carrito por el ID
+      tags: 
+        - Carrito
+    put: 
+      summary: Modifico todos los productos que hay en el carrito seleccionado por el CID por otros productos
+      tags:
+        - Carrito
+    delete:
+      summary: Elimino todos los productos del carrito seleccionado por el CID
+      tags:
+        - Carrito
+  
+  /api/carts/{cid}/product/{pid}:
+    get:
+      summary: Agrego un producto al Carrito seleccionado por el CID.
+      tags: 
+        - Carrito
+    put:
+      summary: Modifico el producto seleccionado por el PID en el carrito seleccionado por el CID
+      tags: 
+        - Carrito
+    delete:
+      summary: Elimino el producto seleccionado por el PID en el carrito seleccionado por el CID
+      tags:
+        - Carrito
+
+  /api/carts/{cid}/purchase:
+    get:
+      summary: Compro los productos que hay en el carro seleccionado y genero un ticket
+      tags: 
+        - Carrito

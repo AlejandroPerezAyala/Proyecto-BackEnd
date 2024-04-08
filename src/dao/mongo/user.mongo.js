@@ -6,4 +6,9 @@ export default class UserManager {
         return user
     } 
 
+    getUserByEmail = async (email) => {
+        const user = await userModel.findOne({email: email})
+        return user
+    }
+
 }

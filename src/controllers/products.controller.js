@@ -1,8 +1,7 @@
 import { productService } from "../services/index.js";
 import { socketServer } from "../app.js";
-
-
-
+import { generateProducts } from "../utils.js";
+import { logger } from "../logger.js";
 
 export const getProducts = async (req,res) =>{
     try{
@@ -13,7 +12,7 @@ export const getProducts = async (req,res) =>{
         res.send(products)
 
     } catch (err) {
-        res.status(500).send("Error al obtener los productos" + err)
+        logger.error(err)
     }
 }
 
@@ -23,7 +22,7 @@ export const getProductById = async (req,res) => {
         const producto = await productService.getProductById(id)
         res.send(producto)
     } catch (err) {
-        res.status(500).send("Error al obtener el producto: " + err)
+        logger.error(err)
     }
 }
 
@@ -44,7 +43,7 @@ export const getAddProducts =  async (req, res) => {
         socketServer.emit('newProduct', productos)
         res.json(producto)
     } catch (err) {
-        res.status(500).send("Error al cargar el producto: " + err)
+        logger.error(err)
     }
 
 }
@@ -63,7 +62,7 @@ export const updateProduct = async (req, res) => {
 
         res.send(producto)
     } catch (err) {
-        res.status(500).send("Error al querer upgradear el producto: " + err)
+        logger.error(err)
     }
 }
 
@@ -75,6 +74,18 @@ export const deleteProduct = async (req, res) => {
         socketServer.emit('deleteProduct', productEliminated.res)
         res.json(productEliminated)
     } catch (err) {
-        res.status(500).send("Error al querer eliminar el producto: " + err)
+        logger.error(err)
     }
+}
+
+export const getMockingProducts = async (req, res) => {
+    const products = []
+
+    for(let i = 0; i < 100; i++){
+        products.push(generateProducts())
+    }
+
+    console.log(products)
+
+    res.send({status: "success", payload: products })
 }

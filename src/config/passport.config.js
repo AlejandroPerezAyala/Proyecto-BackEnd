@@ -1,6 +1,7 @@
 import passport from 'passport'
 import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
+import GoogleStrategy from 'passport-google-oauth20'
 import passportJWT from 'passport-jwt'
 import userModel from '../dao/mongo/models/user.model.js'
 import { cartService } from '../services/index.js'
@@ -8,14 +9,12 @@ import {createHash, isValidPassword} from '../utils.js'
 import config from './config.js'
 import { generateToken } from '../utils.js'
 
+
 const JWTStrategy = passportJWT.Strategy
 const localStrategy = local.Strategy
 
 const cockieExtractor = req => {
     const token = (req?.cookies) ? req.cookies['CoderCookie'] : null
-
-    console.log ('COOKIE EXTRACTOR: ', token)
-
     return token
 }
 
@@ -61,7 +60,7 @@ const initializePassport = () => {
             const user = await userModel.findOne({email:username}).lean().exec()
 
             if(!user){
-                console.log('El usuairo no existe')
+                console.log('El usuario no existe')
                 return done(null, false)
             }
 
@@ -89,11 +88,11 @@ const initializePassport = () => {
     passport.use('github', new GitHubStrategy({
         clientID: config.githubId,
         ClientSecret: config.githubSecret,
-        callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
+        callbackURL: '/api/sessions/githubcallback'
     },async (accessToken, refreshToken, profile, done) => {
         try {
             console.log(profile)
-            const user = await userModel.findOne({email:profile._json.email})
+            const user = await userModel.findOne({email:profile._json.email}).lean().exec()
             if(!user){
                 const newUser = {
                     first_name: profile._json.name,
@@ -107,6 +106,46 @@ const initializePassport = () => {
                 const result = await userModel.create(newUser)
                 done(null, result)
             } else {
+                done(null, user)
+            }
+        } catch (error) {
+            return done(error)
+        }
+    }))
+
+    passport.use(new GoogleStrategy({
+        clientID: config.googleId,
+        clientSecret: config.googleSecret,
+        callbackURL: "http://localhost:8080/api/sessions/googlecallback"
+    }, async (accessToken, refreshToken, profile, done) =>{
+        
+        try {
+            console.log(profile)
+            const user = await userModel.findOne({email:profile._json.email}).lean().exec()
+
+            const cart = await cartService.createCart()
+
+            if(!user){
+                const newUser = {
+                    first_name: profile._json.given_name,
+                    last_name: profile._json.family_name,
+                    rol: "usuario",
+                    email: profile._json.email,
+                    cart: cart.res._id,
+                    password: ""
+                }
+
+                const result = await userModel.create(newUser)
+
+                const user = await userModel.findOne({email:profile._json.email}).lean().exec()
+
+                const token = generateToken(user)
+                user.token = token
+
+                done(null, user)
+            } else {
+                const token = generateToken(user)
+                user.token = token
                 done(null, user)
             }
         } catch (error) {

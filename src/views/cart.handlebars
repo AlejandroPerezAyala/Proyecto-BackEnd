@@ -1,7 +1,9 @@
-<div>
+<div class="w-screen h-screen">
     <h2 class="text-2xl font-bold my-3 dark:text-white">Carrito</h2>
 
-    <div class="relative overflow-x-auto">
+    <h2 id="empty" class="hidden text-4xl font-bold my-3 dark:text-white text-center">CARRITO VACIO</h2>
+
+    <div id="list" class="relative overflow-x-auto mb-5">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -35,12 +37,22 @@
                     <td class="px-6 py-4">
                         ${{this.producto.price}}
                     </td>
+                    <td class="px-6 py-4">
+                        <a href="/home/products">eliminar</a>
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
     </div>
 
-    <button><a href="/home/{{cart._id}}/purchase">Comprar</a></button>
-
+    <div class="flex gap-5">
+        <a href="/home/{{cart._id}}/purchase" class=" ml-2  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Comprar</a>
+        <a href="/home/products" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">volver</a>
+        <button id="btnDel" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Vaciar</button>
+    </div>
+    
 </div>
+
+
+<script src="/static/js/products.js"></script>

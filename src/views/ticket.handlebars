@@ -1,10 +1,13 @@
-<div class="text-white">
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+
+<div class="text-white w-[100vw] h-[90vh]">
     <h2>Ticket</h2>
     {{#if ticket}}
         <p class="text-white">Code: {{ticket.code}}</p>
         <p class="text-white">Date Time: {{ticket.purchase_datetime}}</p>
-        <p class="text-white">Total: $ {{ticket.amount}}</p>
+        <p  class="text-white">Total: $ <span id="amount">{{ticket.amount}}</span></p>
         <p class="text-white">Comprador: {{ticket.purchaser}}</p>
+        <p  class="text-white">total de productos: <span id="qty">{{ticket.products.length}}</span> </p>
         <p class="text-white">Productos:
              <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -47,8 +50,6 @@
             </div>
         </p>
         
-    {{/if}}
-
     <h2>Productos que volvieron al carrito por falta de stock</h2>
     
     <div class="relative overflow-x-auto">
@@ -91,7 +92,19 @@
         </table>
     </div>
 
-    <div>
-        <button><a href="/home/products">volver</a></button>
+    <div class="flex gap-4">
+        <div id="wallet_container"></div>
+        <a href="/home/products">volver</a>
     </div>
+
+    {{else}}
+        <div class="flex flex-col justify-center items-center w-full h-full gap-3">
+            <h1 class="text-5xl"> Los productos del carrito no estan en stock</h1>
+            <h3>Presiona el boton de volver para volver al carrito y eliminar los productos</h3>
+            <a href="/home/products" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">volver</a>
+        </div>
+        
+    {{/if}}
 </div>
+
+<script src="/static/js/mercadopago.js"></script>

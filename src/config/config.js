@@ -12,5 +12,12 @@ export default {
     githubId: process.env.GITHUB_CLIENT_ID,
     githubSecret: process.env.GITHUB_CLIENT_SECRET,
     jwtSecretKey: process.env.JWT_PRIVATE_KEY,
-    blockCookie: process.env.PRIVATE_COOKIE
+    blockCookie: process.env.PRIVATE_COOKIE,
+    enviroment: process.env.ENVIROMENT, 
+    mailUser:process.env.MAIL_USER,
+    mailPass: process.env.MAIL_PASS,
+    googleId: process.env.GOOGLE_CLIENT_ID,
+    googleSecret:process.env.GOOGLE_CLIENT_SECRET,
+    publicKeyMp: process.env.PK_MP,
+    AccessTokenMp: process.env.AT_MP
 }
