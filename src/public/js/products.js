@@ -1,5 +1,6 @@
 let btns = document.querySelectorAll('#addBtn')
 const btnDel = document.getElementById("btnDel")
+const btnsDelProd = document.querySelectorAll('#delProd')
 const cartTitle = document.getElementById("empty")
 const list = document.getElementById("list")
 
@@ -46,6 +47,53 @@ btns.forEach(btn => {
     })
 })
 
+btnsDelProd.forEach( btnDelProd => {
+
+    btnDelProd.addEventListener("click", async (e) =>{
+        e.preventDefault()
+    
+        const productId = e.target.getAttribute('data-id')
+    
+        const result = await fetch("/api/user")
+        const user = await result.json()
+    
+        const data = await fetch(`/api/carts/${user.cart}`)
+        const cart = await data.json()
+    
+        const productos = cart.productos
+    
+    
+        const newArray = productos.filter(producto => producto.producto._id !== productId)
+    
+        await fetch(`/api/carts/${user.cart}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newArray)
+        }).then(result => result.json()).then(json => console.log(json))
+    
+
+        Swal.fire({
+            position: 'bottom-end',
+            title: 'se elimino el producto al carrito',
+            showConfirmButton: false,
+            toast: true,
+            timer: 1000,
+            timerProgressBar:true,
+            showClass: {
+                popup: 'animate__animated animate__backInUp'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__backOutDown'
+              }
+        })
+
+        setInterval("location.reload()", 1000)
+
+    })
+})
+
 btnDel.addEventListener("click" , async (e) => {
     e.preventDefault()
 
@@ -76,3 +124,4 @@ btnDel.addEventListener("click" , async (e) => {
 
     setInterval("location.reload()", 1000)
 })
+
